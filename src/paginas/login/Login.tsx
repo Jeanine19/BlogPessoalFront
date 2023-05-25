@@ -3,11 +3,11 @@ import { Box } from '@mui/material';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import UserLogin from '../../models/UserLogin';
 import { login } from '../../services/Service';
 import { addId, addToken } from '../../store/token/Actions';
 import './Login.css';
-import { toast } from 'react-toastify';
 
 // use pode ser lido HOok
 function Login() {
@@ -72,6 +72,7 @@ function Login() {
     async function onSubmit(e: ChangeEvent<HTMLFormElement>) {
         e.preventDefault();
         try {
+         
             await login('/usuarios/logar', userLogin, setRespUserLogin)
             toast.success('Login efetuado com sucesso!', {
                 position: 'top-right',
@@ -84,6 +85,7 @@ function Login() {
                 progress: undefined,
             });
         } catch (error) {
+   
             toast.error('Erro ao efetuar login! Verifique os dados do Usuário!', {
                 position: 'top-right',
                 autoClose: 2000,
@@ -93,7 +95,7 @@ function Login() {
                 draggable: false,
                 theme: 'colored',
                 progress: undefined,
-              });
+            });
         }
     }
 
@@ -107,7 +109,7 @@ function Login() {
                         <TextField value={userLogin.senha} onChange={(e: ChangeEvent<HTMLInputElement>) => updatedModel(e)} id='senha' label='senha' variant='outlined' name='senha' margin='normal' type='password' fullWidth />
                         <Box marginTop={2} textAlign='center'>
                             <Button type='submit' variant='contained' color='primary'>
-                                Logar
+                                Entrar
                             </Button>
                         </Box>
                     </form>
