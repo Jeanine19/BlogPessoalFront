@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToken } from '../../../store/token/Actions';
 import { UserState } from '../../../store/token/Reducer';
 import './Navbar.css';
+import { toast } from 'react-toastify';
 
 function Navbar() {
     // const [token, setToken] = useLocalStorage('token');
@@ -18,7 +19,16 @@ function Navbar() {
 
     function goLogout() {
         dispatch(addToken(''))
-        alert("Usuário deslogado")
+        toast.info('Usuário Desconectado!', {
+            position: 'top-right',
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: false,
+            theme: 'colored',
+            progress: undefined,
+          });
         navigate('/login')
     }
 
@@ -59,6 +69,13 @@ function Navbar() {
                             <Box mx={1} className='cursor'>
                                 <Typography variant="h6" color="inherit">
                                     cadastrar tema
+                                </Typography>
+                            </Box>
+                        </Link>
+                        <Link to="/perfil" className="text-decorator-none">
+                            <Box mx={1} className='cursor'>
+                                <Typography variant="h6" color="inherit">
+                                    Perfil
                                 </Typography>
                             </Box>
                         </Link>

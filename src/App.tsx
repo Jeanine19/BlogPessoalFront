@@ -1,25 +1,28 @@
-import React from 'react'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Navbar from './components/estaticos/navbar/Navbar'
-import Footer from './components/estaticos/footer/Footer'
-import Home from './paginas/home/Home'
-import Login from './paginas/login/Login';
-import CadastroUsuario from './paginas/cadastroUsuario/CadastroUsuario';
-import ListaTema from './components/temas/listatema/ListaTema';
-import ListaPostagem from './components/postagens/listapostagem/ListaPostagem';
-import CadastroPost from './components/postagens/cadastroPost/CadastroPost';
-import CadastroTema from './components/temas/cadastroTema/CadastroTema';
-import DeletarPostagem from './components/postagens/deletarPostagem/DeletarPostagem';
-import DeletarTema from './components/temas/deletarTema/DeletarTema';
 import { Provider } from 'react-redux';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import Footer from './components/estaticos/footer/Footer';
+import Navbar from './components/estaticos/navbar/Navbar';
+import CadastroPost from './components/postagens/cadastroPost/CadastroPost';
+import DeletarPostagem from './components/postagens/deletarPostagem/DeletarPostagem';
+import ListaPostagem from './components/postagens/listapostagem/ListaPostagem';
+import CadastroTema from './components/temas/cadastroTema/CadastroTema';
+import DeletarTema from './components/temas/deletarTema/DeletarTema';
+import ListaTema from './components/temas/listatema/ListaTema';
+import CadastroUsuario from './paginas/cadastroUsuario/CadastroUsuario';
+import Home from './paginas/home/Home';
+import Login from './paginas/login/Login';
+import Perfil from './paginas/perfil/Perfil';
 import store from './store/Store';
 
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
 
 
   return (
     <Provider store={store}>
+      <ToastContainer />
       <Router>
         <Navbar />
         <div style={{ minHeight: '100vh' }}>
@@ -36,6 +39,7 @@ function App() {
             <Route path="/formularioTema/:id" element={<CadastroTema />} />
             <Route path="/deletarPostagem/:id" element={<DeletarPostagem />} />
             <Route path="/deletarTema/:id" element={<DeletarTema />} />
+            <Route path="/perfil" element={<Perfil />} />
           </Routes>
         </div>
         <Footer />

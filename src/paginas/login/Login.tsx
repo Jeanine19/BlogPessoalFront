@@ -5,9 +5,10 @@ import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import UserLogin from '../../models/UserLogin';
 import { login } from '../../services/Service';
-import { addToken } from '../../store/token/Actions';
+import { addId, addToken } from '../../store/token/Actions';
 import './Login.css';
- 
+import { toast } from 'react-toastify';
+
 // use pode ser lido HOok
 function Login() {
     let navigate = useNavigate();
@@ -15,14 +16,26 @@ function Login() {
 
     const dispatch = useDispatch();
 
-    const[token, setToken] = useState("");
+    // const [token, setToken] = useState("");
 
-    const  [userLogin, setUserLogin] = useState<UserLogin>({
-        
-            id: 0 ,
-            usuario: '',
-            senha: '',
-            token: ''
+    const [userLogin, setUserLogin] = useState<UserLogin>({
+
+        id: 0,
+        nome: "",
+        usuario: '',
+        foto: "",
+        senha: '',
+        token: ''
+    })
+
+    const [respUserLogin, setRespUserLogin] = useState<UserLogin>({
+
+        id: 0,
+        nome: "",
+        usuario: '',
+        foto: "",
+        senha: '',
+        token: ''
     })
 
     function updatedModel(e: ChangeEvent<HTMLInputElement>) {
@@ -33,24 +46,54 @@ function Login() {
         console.log(Object.values(userLogin))
     }
 
-    useEffect(() =>{
-        if(token !== ''){
-            console.log("Token:", token)
+    // useEffect(() => {
+    //     if (token !== '') {
+    //         console.log("Token:", token)
 
-            dispatch(addToken(token))
+    //         dispatch(addToken(token))
+    //         navigate('/home')
+    //     }
+    // }, [token])
+
+    useEffect(() => {
+        if (respUserLogin.token !== "") {
+
+            // Verifica os dados pelo console (Opcional)
+            console.log("Token: " + respUserLogin.token)
+            console.log("ID: " + respUserLogin.id)
+
+            // Guarda as informações dentro do Redux (Store)
+            dispatch(addToken(respUserLogin.token))
+            dispatch(addId(respUserLogin.id.toString()))    // Faz uma conversão de Number para String
             navigate('/home')
         }
-    }, [token])
-    
+    }, [respUserLogin.token])
 
-    async function onSubmit(e: ChangeEvent<HTMLFormElement>){
+    async function onSubmit(e: ChangeEvent<HTMLFormElement>) {
         e.preventDefault();
-        try{
-            await login('/usuarios/logar', userLogin, setToken)
-
-            alert("Usuário logado com sucesso!");
-        }catch(error){
-            alert("Dados do usuário inconsistentes. Erro ao logar!");
+        try {
+            await login('/usuarios/logar', userLogin, setRespUserLogin)
+            toast.success('Login efetuado com sucesso!', {
+                position: 'top-right',
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: false,
+                theme: 'colored',
+                progress: undefined,
+            });
+        } catch (error) {
+            toast.error('Erro ao efetuar login! Verifique os dados do Usuário!', {
+                position: 'top-right',
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: false,
+                theme: 'colored',
+                progress: undefined,
+              });
         }
     }
 
@@ -63,9 +106,9 @@ function Login() {
                         <TextField value={userLogin.usuario} onChange={(e: ChangeEvent<HTMLInputElement>) => updatedModel(e)} id='usuario' label='usuário' variant='outlined' name='usuario' margin='normal' fullWidth />
                         <TextField value={userLogin.senha} onChange={(e: ChangeEvent<HTMLInputElement>) => updatedModel(e)} id='senha' label='senha' variant='outlined' name='senha' margin='normal' type='password' fullWidth />
                         <Box marginTop={2} textAlign='center'>
-                                <Button type='submit' variant='contained' color='primary'>
-                                    Logar
-                                </Button>
+                            <Button type='submit' variant='contained' color='primary'>
+                                Logar
+                            </Button>
                         </Box>
                     </form>
                     <Box display='flex' justifyContent='center' marginTop={2}>

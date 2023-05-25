@@ -4,9 +4,11 @@ import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import Postagem from '../../../models/Postagem';
 import Tema from '../../../models/Tema';
+import User from "../../../models/User";
 import { busca, buscaId, post, put } from '../../../services/Service';
 import { UserState } from '../../../store/token/Reducer';
 import './CadastroPost.css';
+import { toast } from "react-toastify";
 
 function CadastroPost() {
     let navigate = useNavigate();
@@ -16,11 +18,24 @@ function CadastroPost() {
 
     const token = useSelector<UserState, UserState["tokens"]>(
         (state) => state.tokens
-      )
+    )
+
+    const userId = useSelector<UserState, UserState["id"]>(
+        (state) => state.id
+    )
 
     useEffect(() => {
         if (token == "") {
-            alert("Você precisa estar logado")
+            toast.error('Usuário não autenticado! Faça o Login novamente', {
+                position: 'top-right',
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: false,
+                theme: 'colored',
+                progress: undefined,
+              });
             navigate("/login")
 
         }
@@ -31,17 +46,29 @@ function CadastroPost() {
             id: 0,
             descricao: ''
         })
+
+    const [user, setUser] = useState<User>({
+        id: + userId,
+        nome: '',
+        usuario: '',
+        senha: '',
+        foto: ''
+    })
+
     const [postagem, setPostagem] = useState<Postagem>({
         id: 0,
         titulo: '',
         texto: '',
-        tema: null
+        data: '',
+        tema: null,
+        usuario: null
     })
 
-    useEffect(() => { 
+    useEffect(() => {
         setPostagem({
             ...postagem,
-            tema: tema
+            tema: tema,
+            usuario: user,
         })
     }, [tema])
 
@@ -82,19 +109,65 @@ function CadastroPost() {
         e.preventDefault()
 
         if (id !== undefined) {
-            put(`/postagens`, postagem, setPostagem, {
-                headers: {
-                    'Authorization': token
-                }
-            })
-            alert('Postagem atualizada com sucesso');
+            try {
+                put(`/postagens`, postagem, setPostagem, {
+                    headers: {
+                        'Authorization': token
+                    }
+                })
+                toast.success('Postagem atualizada com sucesso', {
+                    position: 'top-right',
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: false,
+                    theme: 'colored',
+                    progress: undefined,
+                });
+            } catch (error) {
+                console.error("Erro:", error)
+                toast.error("Erro ao atualizar Postagem", {
+                    position: 'top-right',
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: false,
+                    theme: 'colored',
+                    progress: undefined,
+                });
+            }
         } else {
-            post(`/postagens`, postagem, setPostagem, {
-                headers: {
-                    'Authorization': token
-                }
-            })
-            alert('Postagem cadastrada com sucesso');
+            try {
+                post(`/postagens`, postagem, setPostagem, {
+                    headers: {
+                        'Authorization': token
+                    }
+                })
+                toast.success('Postagem cadastrada com sucesso', {
+                    position: 'top-right',
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: false,
+                    theme: 'colored',
+                    progress: undefined,
+                });
+            } catch (error) {
+                console.error("Erro:", error)
+                toast.error("Erro ao cadastrar Postagem", {
+                    position: 'top-right',
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: false,
+                    theme: 'colored',
+                    progress: undefined,
+                });
+            }
         }
         back()
 
@@ -129,7 +202,7 @@ function CadastroPost() {
                     </Select>
                     <FormHelperText>Escolha um tema para a postagem</FormHelperText>
                     <Button type="submit" variant="contained" color="primary">
-                        Finalizar
+                        {postagem.id ? 'Atualizar' : 'Cadastrar'}
                     </Button>
                 </FormControl>
             </form>
