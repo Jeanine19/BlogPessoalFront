@@ -1,10 +1,10 @@
-import React from 'react';
-import {Typography, Grid, Button} from '@material-ui/core';
-import {Box} from '@mui/material';
-import './Home.css';
-import ImgUrl from '../../assets/img/H88yIo2.png'
-import TabPostagem from '../../components/postagens/tabpostagem/TabPostagem';
+import { Button, Grid, Typography } from '@material-ui/core';
+import { Box } from '@mui/material';
+import { Link } from 'react-router-dom';
+import ImgUrl from '../../assets/img/H88yIo2.png';
 import ModalPostagem from '../../components/postagens/modalPostagem/ModalPostagem';
+import TabPostagem from '../../components/postagens/tabpostagem/TabPostagem';
+import './Home.css';
 
 function Home() {
     return (
@@ -19,7 +19,9 @@ function Home() {
                         <Box marginRight={1}>
                             <ModalPostagem />
                         </Box>
-                        <Button variant="outlined" className='botao'>Ver Postagens</Button>
+                        <Link to='/posts'>
+                            <Button variant="outlined" className='botao'>Ver Postagens</Button>
+                        </Link>
                     </Box>
                 </Grid>
                 <Grid item xs={6} >

@@ -1,16 +1,22 @@
-import React, { useEffect, useState } from 'react'
-import {Typography, Button, Card, CardActions, CardContent } from "@material-ui/core"
-import {Box} from '@mui/material';
-import './DeletarPostagem.css';
-import {useNavigate, useParams } from 'react-router-dom'
-import useLocalStorage from 'react-use-localstorage';
+import { Button, Card, CardActions, CardContent, Typography } from "@material-ui/core";
+import { Box } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 import Postagem from '../../../models/Postagem';
 import { buscaId, deleteId } from '../../../services/Service';
+import { UserState } from '../../../store/token/Reducer';
+import './DeletarPostagem.css';
 
 function DeletarPostagem() {
     let navigate = useNavigate();
     const { id } = useParams<{id: string}>();
-    const [token, setToken] = useLocalStorage('token');
+    // const [token, setToken] = useLocalStorage('token');
+
+    const token = useSelector<UserState, UserState["tokens"]>(
+      (state) => state.tokens
+    )
+    
     const [post, setPosts] = useState<Postagem>()
 
     useEffect(() => {

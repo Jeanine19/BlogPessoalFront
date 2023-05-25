@@ -1,14 +1,11 @@
-import React from 'react';
 import { AppBar, Toolbar, Typography } from '@material-ui/core';
 import { Box } from '@mui/material';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom'
-import useLocalStorage from 'react-use-localstorage';
-
-import './Navbar.css'
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { UserState } from '../../../store/token/Reducer';
 import { addToken } from '../../../store/token/Actions';
+import { UserState } from '../../../store/token/Reducer';
+import './Navbar.css';
+
 function Navbar() {
     // const [token, setToken] = useLocalStorage('token');
     let navigate = useNavigate();

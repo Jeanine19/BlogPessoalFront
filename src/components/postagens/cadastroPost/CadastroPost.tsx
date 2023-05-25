@@ -1,17 +1,22 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
-import { Container, Typography, TextField, Button, Select, InputLabel, MenuItem, FormControl, FormHelperText } from "@material-ui/core"
-import './CadastroPost.css';
-import {useNavigate, useParams } from 'react-router-dom'
-import Tema from '../../../models/Tema';
-import useLocalStorage from 'react-use-localstorage';
+import { Button, Container, FormControl, FormHelperText, InputLabel, MenuItem, Select, TextField, Typography } from "@material-ui/core";
+import { ChangeEvent, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 import Postagem from '../../../models/Postagem';
+import Tema from '../../../models/Tema';
 import { busca, buscaId, post, put } from '../../../services/Service';
+import { UserState } from '../../../store/token/Reducer';
+import './CadastroPost.css';
 
 function CadastroPost() {
     let navigate = useNavigate();
     const { id } = useParams<{ id: string }>();
     const [temas, setTemas] = useState<Tema[]>([])
-    const [token, setToken] = useLocalStorage('token');
+    // const [token, setToken] = useLocalStorage('token');
+
+    const token = useSelector<UserState, UserState["tokens"]>(
+        (state) => state.tokens
+      )
 
     useEffect(() => {
         if (token == "") {
