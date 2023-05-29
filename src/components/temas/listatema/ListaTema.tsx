@@ -16,7 +16,7 @@ function ListaTema() {
   const token = useSelector<UserState, UserState["tokens"]>(
     (state) => state.tokens
   )
-  
+
   let navigate = useNavigate();
 
   useEffect(() => {
@@ -37,11 +37,28 @@ function ListaTema() {
 
 
   async function getTema() {
-    await busca("/temas", setTemas, {
-      headers: {
-        'Authorization': token
+
+    try {
+      await busca("/temas", setTemas, {
+        headers: {
+          'Authorization': token
+        }
+      })
+    } catch (error: any) {
+      if (error.response?.status === 403) {
+        toast.error('Usuário não autenticado!', {
+          position: 'top-right',
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+          theme: 'colored',
+          progress: undefined,
+        });
+        navigate("/login")
       }
-    })
+    }
   }
 
 

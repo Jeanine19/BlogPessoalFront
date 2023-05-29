@@ -1,61 +1,68 @@
-import { Button, Card, CardActions, CardContent, Typography } from '@material-ui/core';
-import { Box } from '@mui/material';
+import {
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Typography,
+} from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import Postagem from '../../../models/Postagem';
+
 import { busca } from '../../../services/Service';
+
 import { UserState } from '../../../store/token/Reducer';
 import './ListaPostagem.css';
-import { toast } from 'react-toastify';
 
-function ListaPostagem() {
-  const [posts, setPosts] = useState<Postagem[]>([])
-  // const [token, setToken] = useLocalStorage('token');
+function Listapost() {
+  let navigate = useNavigate();
+
+  const [posts, setPosts] = useState<any[]>([]);
 
   const token = useSelector<UserState, UserState["tokens"]>(
     (state) => state.tokens
   )
 
-  let navigate = useNavigate();
+  // const userId = useSelector<UserState, UserState["id"]>(
+  //   (state) => state.id
+  // )
+  // let filter = props.inputText
+
+  //   console.log()
+
+
+
 
   useEffect(() => {
-    if (token == "") {
-      toast.error('Usuário não autenticado! Faça o Login novamente', {
-        position: 'top-right',
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: false,
-        theme: 'colored',
-        progress: undefined,
-      });
-      navigate("/login")
-
+    if (token === '') {
+      alert('Ai não meu bom');
+      navigate('/login');
     }
-  }, [token])
+  }, [token]);
 
-  async function getPost() {
+  async function getpost() {
     await busca('/postagens', setPosts, {
-      headers: {
-        'Authorization': token
-      }
-    })
+      headers: { Authorization: token },
+    });
   }
 
   useEffect(() => {
+    getpost();
+  }, [posts.length]);
 
-    getPost()
-
-  }, [posts.length])
+  // .filter((post) => {
+  //   return(
+  //     post.titulo.includes(filter)
+  //   )
+  // })
 
   return (
     <>
-      {
-        posts.map(post => (
-          <Box m={2} >
-            <Card variant="outlined">
+      {posts.length === 0 ? (<div className="spinner"></div>) : (
+        posts.map((post) => (
+          <Box marginX={20} m={2} className='boxPost' border={1} borderRadius={5} justifySelf='flex-start'>
+            <Card className='cardPost'>
               <CardContent>
                 <Typography color="textSecondary" gutterBottom>
                   Postagens
@@ -98,9 +105,9 @@ function ListaPostagem() {
             </Card>
           </Box>
         ))
-      }
+      )}
     </>
-  )
+  );
 }
 
-export default ListaPostagem;
+export default Listapost;

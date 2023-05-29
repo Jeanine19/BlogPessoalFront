@@ -35,7 +35,7 @@ function CadastroPost() {
                 draggable: false,
                 theme: 'colored',
                 progress: undefined,
-              });
+            });
             navigate("/login")
 
         }
@@ -80,11 +80,27 @@ function CadastroPost() {
     }, [id])
 
     async function getTemas() {
-        await busca('/temas', setTemas, {
-            headers: {
-                'Authorization': token
+        try {
+            await busca('/temas', setTemas, {
+                headers: {
+                    'Authorization': token
+                }
+            })
+        } catch (error: any) {
+            if (error.response?.status === 403) {
+                toast.error('Usuário não autenticado!', {
+                    position: 'top-right',
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: false,
+                    theme: 'colored',
+                    progress: undefined,
+                });
+                navigate("/login")
             }
-        })
+        }
     }
 
     async function findByIdPostagem(id: string) {
@@ -110,7 +126,7 @@ function CadastroPost() {
 
         if (id !== undefined) {
             try {
-                put(`/postagens`, postagem, setPostagem, {
+                await put(`/postagens`, postagem, setPostagem, {
                     headers: {
                         'Authorization': token
                     }
@@ -140,7 +156,7 @@ function CadastroPost() {
             }
         } else {
             try {
-                post(`/postagens`, postagem, setPostagem, {
+                await post(`/postagens`, postagem, setPostagem, {
                     headers: {
                         'Authorization': token
                     }
@@ -193,15 +209,18 @@ function CadastroPost() {
                             headers: {
                                 'Authorization': token
                             }
-                        })}>
+                        })}
+                        >
                         {
                             temas.map(tema => (
-                                <MenuItem value={tema.id}>{tema.descricao}</MenuItem>
+                                <MenuItem value={tema.id} >{tema.descricao}</MenuItem>
                             ))
                         }
                     </Select>
                     <FormHelperText>Escolha um tema para a postagem</FormHelperText>
-                    <Button type="submit" variant="contained" color="primary">
+                    <Button type="submit" variant="contained" color="primary"
+                        disabled={postagem.titulo.length == 0 || postagem.texto.length == 0 || postagem.tema?.id == 0}
+                    >
                         {postagem.id ? 'Atualizar' : 'Cadastrar'}
                     </Button>
                 </FormControl>

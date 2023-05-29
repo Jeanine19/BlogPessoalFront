@@ -2,7 +2,8 @@ import axios from 'axios';
 
 
 export const api = axios.create({
-    baseURL: 'https://blogpessoal-g9n9.onrender.com/'
+    // baseURL: 'https://blogpessoal-g9n9.onrender.com/'
+    baseURL: 'http://localhost:8080/'
 })
 
 

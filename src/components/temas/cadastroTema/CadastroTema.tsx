@@ -68,7 +68,7 @@ function CadastroTema() {
 
         if (id !== undefined) {
             try {
-                put(`/temas`, tema, setTema, {
+                await put(`/temas`, tema, setTema, {
                     headers: {
                         'Authorization': token
                     }
@@ -98,7 +98,7 @@ function CadastroTema() {
             }
         } else {
             try {
-                post(`/temas`, tema, setTema, {
+               await post(`/temas`, tema, setTema, {
                     headers: {
                         'Authorization': token
                     }
