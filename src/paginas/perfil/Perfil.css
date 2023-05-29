@@ -29,10 +29,11 @@
 }
 
 .card-container-texto{
-    max-width: 550px;
+    max-width: 820px;
     color: #fff;
     text-align: justify;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.25rem;
 }
 
 h1{

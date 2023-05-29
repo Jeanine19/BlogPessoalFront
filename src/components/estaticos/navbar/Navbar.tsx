@@ -8,7 +8,7 @@ import './Navbar.css';
 import { toast } from 'react-toastify';
 
 function Navbar() {
-    // const [token, setToken] = useLocalStorage('token');
+
     let navigate = useNavigate();
 
     const dispatch = useDispatch()

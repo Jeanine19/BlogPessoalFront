@@ -1,17 +1,21 @@
-import { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { useSelector } from 'react-redux';
 
 import User from '../../models/User';
 import { buscaId } from '../../services/Service';
-import './Perfil.css'
+import { addToken } from '../../store/token/Actions';
 import { UserState } from '../../store/token/Reducer';
+import './Perfil.css';
+import { toast } from 'react-toastify';
 
 function Perfil() {
 
     let history = useNavigate()
 
+    const dispatch = useDispatch()
+    
     // Pega o ID guardado no Store
     const id = useSelector<UserState, UserState["id"]>(
         (state) => state.id
@@ -32,18 +36,33 @@ function Perfil() {
 
     useEffect(() => {
         if (token === "") {
-            alert("Você precisa estar logado")
+            toast.error('Usuário não autenticado!', {
+                position: 'top-right',
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: false,
+                theme: 'colored',
+                progress: undefined,
+              });
             history("/login")
         }
     }, [token])
 
-    // Métedo para pegar os dados de um Usuário especifico pelo ID
+    // Método para pegar os dados de um Usuário especifico pelo ID
     async function findById(id: string) {
-        await buscaId(`/usuarios/${id}`, setUser, {
-            headers: {
-                'Authorization': token
+        try {
+            await buscaId(`/usuarios/${id}`, setUser, {
+                headers: {
+                    'Authorization': token
+                }
+            })
+        } catch (error: any) {
+            if (error.response?.status === 403) {
+                dispatch(addToken(''))
             }
-        })
+        }
     }
 
     useEffect(() => {
@@ -56,14 +75,14 @@ function Perfil() {
         <Box className='card-principal'>
             <Box className='card-container-imagem'>
                 <img className='card-imagem'
-                    src={ user.foto }
-                    alt={ user.nome } />
+                    src={user.foto}
+                    alt={user.nome} />
             </Box>
 
             <Box className='card-container-info'>
                 <Box>
-                    <h1>{ user.nome }</h1>
-                    <h3>{ user.usuario }</h3>
+                    <h1>{user.nome}</h1>
+                    <h3>{user.usuario}</h3>
                     <hr />
                 </Box>
 
@@ -82,3 +101,4 @@ function Perfil() {
 }
 
 export default Perfil
+

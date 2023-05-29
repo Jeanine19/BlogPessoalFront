@@ -1,6 +1,6 @@
 import { Button, Container, FormControl, FormHelperText, InputLabel, MenuItem, Select, TextField, Typography } from "@material-ui/core";
 import { ChangeEvent, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import Postagem from '../../../models/Postagem';
 import Tema from '../../../models/Tema';
@@ -9,12 +9,14 @@ import { busca, buscaId, post, put } from '../../../services/Service';
 import { UserState } from '../../../store/token/Reducer';
 import './CadastroPost.css';
 import { toast } from "react-toastify";
+import { addToken } from "../../../store/token/Actions";
 
 function CadastroPost() {
     let navigate = useNavigate();
     const { id } = useParams<{ id: string }>();
     const [temas, setTemas] = useState<Tema[]>([])
-    // const [token, setToken] = useLocalStorage('token');
+    
+    const dispatch = useDispatch()
 
     const token = useSelector<UserState, UserState["tokens"]>(
         (state) => state.tokens
@@ -25,8 +27,8 @@ function CadastroPost() {
     )
 
     useEffect(() => {
-        if (token == "") {
-            toast.error('Usuário não autenticado! Faça o Login novamente', {
+        if (token === "") {
+            toast.error('Usuário não autenticado!', {
                 position: 'top-right',
                 autoClose: 2000,
                 hideProgressBar: false,
@@ -88,17 +90,7 @@ function CadastroPost() {
             })
         } catch (error: any) {
             if (error.response?.status === 403) {
-                toast.error('Usuário não autenticado!', {
-                    position: 'top-right',
-                    autoClose: 2000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: false,
-                    draggable: false,
-                    theme: 'colored',
-                    progress: undefined,
-                });
-                navigate("/login")
+                dispatch(addToken(''))
             }
         }
     }
@@ -141,18 +133,21 @@ function CadastroPost() {
                     theme: 'colored',
                     progress: undefined,
                 });
-            } catch (error) {
-                console.error("Erro:", error)
-                toast.error("Erro ao atualizar Postagem", {
-                    position: 'top-right',
-                    autoClose: 2000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: false,
-                    draggable: false,
-                    theme: 'colored',
-                    progress: undefined,
-                });
+            } catch (error: any) {
+                if (error.response?.status === 403) {
+                    dispatch(addToken(''))
+                } else {
+                    toast.error("Erro ao Atualizar Postagem", {
+                        position: 'top-right',
+                        autoClose: 2000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: false,
+                        draggable: false,
+                        theme: 'colored',
+                        progress: undefined,
+                    });
+                }
             }
         } else {
             try {
@@ -171,18 +166,21 @@ function CadastroPost() {
                     theme: 'colored',
                     progress: undefined,
                 });
-            } catch (error) {
-                console.error("Erro:", error)
-                toast.error("Erro ao cadastrar Postagem", {
-                    position: 'top-right',
-                    autoClose: 2000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: false,
-                    draggable: false,
-                    theme: 'colored',
-                    progress: undefined,
-                });
+            } catch (error: any) {
+                if (error.response?.status === 403) {
+                    dispatch(addToken(''))
+                } else {
+                    toast.error("Erro ao Cadastrar Postagem", {
+                        position: 'top-right',
+                        autoClose: 2000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: false,
+                        draggable: false,
+                        theme: 'colored',
+                        progress: undefined,
+                    });
+                }
             }
         }
         back()
@@ -210,7 +208,7 @@ function CadastroPost() {
                                 'Authorization': token
                             }
                         })}
-                        >
+                    >
                         {
                             temas.map(tema => (
                                 <MenuItem value={tema.id} >{tema.descricao}</MenuItem>

@@ -11,12 +11,10 @@ import './Login.css';
 
 // use pode ser lido HOok
 function Login() {
+   
     let navigate = useNavigate();
-    // const[token, setToken] = useLocalStorage('token');
 
     const dispatch = useDispatch();
-
-    // const [token, setToken] = useState("");
 
     const [userLogin, setUserLogin] = useState<UserLogin>({
 
@@ -46,25 +44,14 @@ function Login() {
         console.log(Object.values(userLogin))
     }
 
-    // useEffect(() => {
-    //     if (token !== '') {
-    //         console.log("Token:", token)
-
-    //         dispatch(addToken(token))
-    //         navigate('/home')
-    //     }
-    // }, [token])
-
     useEffect(() => {
         if (respUserLogin.token !== "") {
 
-            // Verifica os dados pelo console (Opcional)
             console.log("Token: " + respUserLogin.token)
             console.log("ID: " + respUserLogin.id)
 
-            // Guarda as informações dentro do Redux (Store)
             dispatch(addToken(respUserLogin.token))
-            dispatch(addId(respUserLogin.id.toString()))    // Faz uma conversão de Number para String
+            dispatch(addId(respUserLogin.id.toString()))    
             navigate('/home')
         }
     }, [respUserLogin.token])

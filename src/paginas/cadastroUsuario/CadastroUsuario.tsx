@@ -7,13 +7,11 @@ import User from '../../models/User'
 import { cadastroUsuario } from '../../services/Service'
 import './CadastroUsuario.css'
 
-
-
 function CadastroUsuario() {
     let navigate = useNavigate();
-    // serve para o confirmar se as senhas digitadas são iguais 
+
     const [confirmarSenha, setConfirmarSenha] = useState<String>("")
-    //contem as informações que estou enviando para cadastro enquanto n tem nada prenchido ele vida com esses valores padrões colocados em baixo
+
     const [user, setUser] = useState<User>(
         {
             id: 0,
@@ -22,7 +20,7 @@ function CadastroUsuario() {
             senha: '',
             foto: ''
         })
-    //serve para armazenar os valores de retorno da api quando eu envio os dados de cadastro e efetivo ela devolve um json com os dados cadastrados e eles eu gravo isso de userResult
+
     const [userResult, setUserResult] = useState<User>(
         {
             id: 0,
@@ -32,19 +30,16 @@ function CadastroUsuario() {
             foto: ''
         })
 
-    //ele vai olhar para userResult se for o id for diferente de 0 ele te manda para tela de login 
     useEffect(() => {
         if (userResult.id != 0) {
             navigate('/login')
         }
     }, [userResult])
 
-    // essa função ela ativa junto do State confirmar senha, ela pega o valor digitado lá  e compara
     function confirmarSenhaHandle(e: ChangeEvent<HTMLInputElement>) {
         setConfirmarSenha(e.target.value)
     }
 
-    //vai populando o objeto conforme os dados que eu vou preenchendo
     function updatedModel(e: ChangeEvent<HTMLInputElement>) {
 
         setUser({
@@ -53,9 +48,9 @@ function CadastroUsuario() {
         })
 
     }
-    //aqui estou fazendo o cadastro estou enviado um create para api
+
     async function onSubmit(e: ChangeEvent<HTMLFormElement>) {
-        e.preventDefault() // Não atualiza a pagina que é comportamento padrão do botão 
+        e.preventDefault() 
 
         if (confirmarSenha == user.senha) {
 
@@ -192,9 +187,6 @@ function CadastroUsuario() {
                     </form>
                 </Box>
             </Grid>
-
-
-
         </Grid>
     )
 }

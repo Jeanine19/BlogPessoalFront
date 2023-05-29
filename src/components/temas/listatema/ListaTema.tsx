@@ -1,17 +1,20 @@
 import { Button, Card, CardActions, CardContent, Typography } from '@material-ui/core';
 import { Box } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import Tema from '../../../models/Tema';
 import { busca } from '../../../services/Service';
 import { UserState } from '../../../store/token/Reducer';
 import './ListaTema.css';
 import { toast } from 'react-toastify';
+import { addToken } from '../../../store/token/Actions';
 
 function ListaTema() {
+
   const [temas, setTemas] = useState<Tema[]>([])
-  // const [token, setToken] = useLocalStorage('token');
+
+  const dispatch = useDispatch()
 
   const token = useSelector<UserState, UserState["tokens"]>(
     (state) => state.tokens
@@ -20,8 +23,8 @@ function ListaTema() {
   let navigate = useNavigate();
 
   useEffect(() => {
-    if (token == '') {
-      toast.error('Usuário não autenticado! Faça o Login novamente', {
+    if (token === '') {
+      toast.error('Usuário não autenticado!', {
         position: 'top-right',
         autoClose: 2000,
         hideProgressBar: false,
@@ -46,17 +49,7 @@ function ListaTema() {
       })
     } catch (error: any) {
       if (error.response?.status === 403) {
-        toast.error('Usuário não autenticado!', {
-          position: 'top-right',
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: false,
-          theme: 'colored',
-          progress: undefined,
-        });
-        navigate("/login")
+        dispatch(addToken(''))
       }
     }
   }
@@ -68,9 +61,9 @@ function ListaTema() {
 
   return (
     <>
-      {
-        temas.map(tema => (
-          <Box m={2} >
+      {temas.length === 0 ? (<div className="spinner"></div>) : (
+        temas.map((tema) => (
+          <Box marginX={20} m={2}>
             <Card variant="outlined">
               <CardContent>
                 <Typography color="textSecondary" gutterBottom>
@@ -102,7 +95,7 @@ function ListaTema() {
             </Card>
           </Box>
         ))
-      }
+      )}
     </>
   );
 }

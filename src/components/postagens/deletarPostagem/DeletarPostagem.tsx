@@ -1,18 +1,22 @@
 import { Button, Card, CardActions, CardContent, Typography } from "@material-ui/core";
 import { Box } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from "react-toastify";
 import Postagem from '../../../models/Postagem';
 import { buscaId, deleteId } from '../../../services/Service';
+import { addToken } from "../../../store/token/Actions";
 import { UserState } from '../../../store/token/Reducer';
 import './DeletarPostagem.css';
-import { toast } from "react-toastify";
 
 function DeletarPostagem() {
+
   let navigate = useNavigate();
+
   const { id } = useParams<{ id: string }>();
-  // const [token, setToken] = useLocalStorage('token');
+
+  const dispatch = useDispatch()
 
   const token = useSelector<UserState, UserState["tokens"]>(
     (state) => state.tokens
@@ -21,8 +25,8 @@ function DeletarPostagem() {
   const [post, setPosts] = useState<Postagem>()
 
   useEffect(() => {
-    if (token == "") {
-      toast.error('Usuário não autenticado! Faça o Login novamente', {
+    if (token === "") {
+      toast.error('Usuário não autenticado!', {
         position: 'top-right',
         autoClose: 2000,
         hideProgressBar: false,
@@ -44,31 +48,53 @@ function DeletarPostagem() {
   }, [id])
 
   async function findById(id: string) {
-    
-    buscaId(`/postagens/${id}`, setPosts, {
-      headers: {
-        'Authorization': token
+    try {
+      await buscaId(`/postagens/${id}`, setPosts, {
+        headers: {
+          'Authorization': token
+        }
+      })
+    } catch (error: any) {
+      if (error.response?.status === 403) {
+        dispatch(addToken(''))
       }
-    })
+    }
   }
 
-  function sim() {
+  async function sim() {
     navigate('/posts')
-    deleteId(`/postagens/${id}`, {
-      headers: {
-        'Authorization': token
+    try {
+      await deleteId(`/postagens/${id}`, {
+        headers: {
+          'Authorization': token
+        }
+      });
+      toast.success('Postagem deletada com sucesso!', {
+        position: 'top-right',
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        theme: 'colored',
+        progress: undefined,
+      });
+    } catch (error: any) {
+      if (error.response?.status === 403) {
+        dispatch(addToken(''))
+      } else {
+        toast.error("Erro ao Deletar Postagem", {
+          position: 'top-right',
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+          theme: 'colored',
+          progress: undefined,
+        });
       }
-    });
-    toast.success('Postagem deletada com sucesso!', {
-      position: 'top-right',
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: false,
-      theme: 'colored',
-      progress: undefined,
-    });
+    }
   }
 
   function nao() {

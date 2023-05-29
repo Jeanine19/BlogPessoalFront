@@ -15,15 +15,9 @@
 }
 
 
-.boxPost {
+ .boxPost {
     width: 45%;
     justify-self: flex-start !important;
-}
-
-.cardPost {
-    background-color: transparent !important;
-
-    box-shadow: none !important;
 }
 
 .text-decorator-none {
