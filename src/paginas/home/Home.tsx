@@ -1,7 +1,6 @@
 import { Button, Grid, Typography } from '@material-ui/core';
 import { Box } from '@mui/material';
 import { Link } from 'react-router-dom';
-import ImgUrl from '../../assets/img/H88yIo2.png';
 import ModalPostagem from '../../components/postagens/modalPostagem/ModalPostagem';
 import TabPostagem from '../../components/postagens/tabpostagem/TabPostagem';
 import './Home.css';
@@ -25,7 +24,7 @@ function Home() {
                     </Box>
                 </Grid>
                 <Grid item xs={6} >
-                    <img src={ImgUrl} alt="" width="500px" height="500px" />
+                    <img src="https://i.imgur.com/7NXtjG4.png" alt="" width="500px" height="500px" />
                 </Grid>
                 <Grid xs={12} className='postagens'>
                 <TabPostagem />

@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Button} from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
@@ -9,13 +9,14 @@ import { addToken } from '../../store/token/Actions';
 import { UserState } from '../../store/token/Reducer';
 import './Perfil.css';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
 function Perfil() {
 
     let history = useNavigate()
 
     const dispatch = useDispatch()
-    
+
     // Pega o ID guardado no Store
     const id = useSelector<UserState, UserState["id"]>(
         (state) => state.id
@@ -45,7 +46,7 @@ function Perfil() {
                 draggable: false,
                 theme: 'colored',
                 progress: undefined,
-              });
+            });
             history("/login")
         }
     }, [token])
@@ -77,7 +78,13 @@ function Perfil() {
                 <img className='card-imagem'
                     src={user.foto}
                     alt={user.nome} />
+                <Link to="/atualizarusuario" className="text-decorator-none">
+                    <Button variant="contained" color="info" >
+                        Editar Perfil
+                    </Button>
+                </Link>
             </Box>
+
 
             <Box className='card-container-info'>
                 <Box>
@@ -92,9 +99,6 @@ function Perfil() {
                     Deleniti officiis sint perspiciatis nisi iste, voluptate sunt asperiores dolor sapiente non corporis omnis voluptatem soluta. Nulla odio alias aperiam, magnam eaque assumenda tempora! Inventore odit iure unde placeat iste.
                 </p>
 
-                <p className='card-container-texto'>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias consectetur tempore enim hic ad, optio ratione repellendus et. Nemo facilis laborum eum facere ipsam ab ad iusto eligendi deleniti qui?
-                </p>
             </Box>
         </Box>
     )

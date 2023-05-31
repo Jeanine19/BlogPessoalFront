@@ -12,6 +12,7 @@ import './CadastroTema.css';
 
 function CadastroTema() {
     let navigate = useNavigate();
+    
     const { id } = useParams<{ id: string }>();
 
     const dispatch = useDispatch()

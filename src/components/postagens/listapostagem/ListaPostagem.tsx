@@ -3,13 +3,12 @@ import { Box } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-
 import { busca } from '../../../services/Service';
 
-import { UserState } from '../../../store/token/Reducer';
-import './ListaPostagem.css';
 import { toast } from 'react-toastify';
 import { addToken } from '../../../store/token/Actions';
+import { UserState } from '../../../store/token/Reducer';
+import './ListaPostagem.css';
 
 function Listapost() {
   
@@ -54,7 +53,7 @@ function Listapost() {
   useEffect(() => {
     getpost();
   }, [posts.length]);
-
+  
   return (
     <>
       {posts.length === 0 ? (<div className="spinner"></div>) : (
@@ -80,6 +79,7 @@ function Listapost() {
                 <Typography variant="body1" component="p">
                   Data: {Intl.DateTimeFormat('pt-BR', { dateStyle: 'short', timeStyle: 'medium' }).format(new Date(post.data))}
                 </Typography>
+
               </CardContent>
               <CardActions>
                 <Box display="flex" justifyContent="center" mb={1.5}>

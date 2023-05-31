@@ -72,6 +72,13 @@ function Navbar() {
                                 </Typography>
                             </Box>
                         </Link>
+                        <Link to="/postagensportitulo" className="text-decorator-none">
+                            <Box mx={1} className='cursor'>
+                                <Typography variant="h6" color="inherit">
+                                    Postagens por título
+                                </Typography>
+                            </Box>
+                        </Link>
                         <Link to="/perfil" className="text-decorator-none">
                             <Box mx={1} className='cursor'>
                                 <Typography variant="h6" color="inherit">
@@ -79,6 +86,7 @@ function Navbar() {
                                 </Typography>
                             </Box>
                         </Link>
+                       
                         <Box mx={1} className='cursor' onClick={goLogout}>
                             <Typography variant="h6" color="inherit">
                                 logout
