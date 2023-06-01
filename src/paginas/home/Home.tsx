@@ -1,37 +1,73 @@
-import { Button, Grid, Typography } from '@material-ui/core';
+import React, { useEffect } from 'react';
+import { Typography, Grid, Button } from '@material-ui/core';
 import { Box } from '@mui/material';
-import { Link } from 'react-router-dom';
-import ModalPostagem from '../../components/postagens/modalPostagem/ModalPostagem';
 import TabPostagem from '../../components/postagens/tabpostagem/TabPostagem';
+import ModalPostagem from '../../components/postagens/modalPostagem/ModalPostagem';
+import { useNavigate } from 'react-router';
+import { useSelector } from 'react-redux';
+import { UserState } from '../../store/token/Reducer';
 import './Home.css';
+import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import Carrossel from '../../components/carrossel/Carrossel';
 
 function Home() {
+  let navigate = useNavigate();
+
+  const token = useSelector<UserState, UserState['tokens']>(
+      (state) => state.tokens
+  )
+
+  useEffect(() => {
+      if (token == "") {
+        toast.error('Você precisa estar logado', {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+          theme: "colored",
+          progress: undefined,
+      });
+
+          navigate("/login")
+      }
+  }, [token])
+
     return (
         <>
-            <Grid container direction="row" justifyContent="center" alignItems="center" className='caixa'>
+        <Grid container direction="row" justifyContent="center" alignItems="center" className='caixa'>
                 <Grid alignItems="center" item xs={6}>
                     <Box paddingX={20} >
-                        <Typography variant="h3" gutterBottom color="textPrimary" component="h3" align="center" className='titulo'>Seja bem vindo(a)!</Typography>
+                        <Typography variant="h4" gutterBottom color="textPrimary" component="h4" align="center" className='titulo'>Seja bem vindo(a)!</Typography>
                         <Typography variant="h5" gutterBottom color="textPrimary" component="h5" align="center" className='titulo'>expresse aqui os seus pensamentos e opiniões!</Typography>
                     </Box>
                     <Box display="flex" justifyContent="center">
                         <Box marginRight={1}>
-                            <ModalPostagem />
+                        <ModalPostagem />
                         </Box>
-                        <Link to='/posts'>
-                            <Button variant="outlined" className='botao'>Ver Postagens</Button>
+                        <Link to='/postagens' className="text-decorator-none">
+                          <Button variant="outlined" className='botao'>Ver Postagens</Button>
                         </Link>
                     </Box>
                 </Grid>
                 <Grid item xs={6} >
-                    <img src="https://i.imgur.com/7NXtjG4.png" alt="" width="500px" height="500px" />
+                    <img src="https://i.pinimg.com/originals/4d/e9/25/4de925596a451772e2a2ed33c76c94ba.gif" alt="" width="500px" height="500px" />
                 </Grid>
                 <Grid xs={12} className='postagens'>
-                <TabPostagem />
                 </Grid>
             </Grid>
+            <Grid container style={{ marginTop: "8px" }}>
+      <Grid item xs={12}>
+        
+        <TabPostagem/>
+      </Grid>
+    </Grid>
         </>
-    );
-}
-
-export default Home;
+      
+      
+      );
+    }
+    
+    export default Home;
