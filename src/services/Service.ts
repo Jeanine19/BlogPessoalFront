@@ -1,11 +1,8 @@
 import axios from 'axios';
 
-
 export const api = axios.create({
-    // baseURL: 'https://blogpessoal-g9n9.onrender.com/'
-    baseURL: 'http://localhost:8080/'
+    baseURL: import.meta.env.VITE_API_URL
 })
-
 
 export const cadastroUsuario = async (url: any, dados: any, setDado: any) => {
     const resposta = await api.post(url, dados)

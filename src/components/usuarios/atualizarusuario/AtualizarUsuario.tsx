@@ -34,7 +34,6 @@ function AtualizarUsuario() {
     })
 
     const [confirmarSenha, setConfirmarSenha] = useState<String>("")
-    // const [senha, setSenha] = useState<String>("")
 
     useEffect(() => {
         if (token === "") {
@@ -55,7 +54,7 @@ function AtualizarUsuario() {
     useEffect(() => {
         if (id !== undefined) {
             findById(id)
-            
+
         }
     }, [id])
 
@@ -73,8 +72,6 @@ function AtualizarUsuario() {
             }
         }
     }
-    
-    // console.log({user})
 
     function updatedUsuario(e: ChangeEvent<HTMLInputElement>) {
 
@@ -83,10 +80,8 @@ function AtualizarUsuario() {
             [e.target.name]: e.target.value
         })
 
-        
-    }
 
-    
+    }
 
     function confirmarSenhaHandle(e: ChangeEvent<HTMLInputElement>) {
         setConfirmarSenha(e.target.value)
@@ -144,91 +139,91 @@ function AtualizarUsuario() {
 
     const checaNome = user.nome.length > 0 && user.nome.length < 3
     const checaUsuario = !validarEmail && user.usuario.length > 0
-    const checaVazio =  user.nome.length === 0 || user.usuario.length === 0 || 
-                        confirmarSenha.length === 0
+    const checaVazio = user.nome.length === 0 || user.usuario.length === 0 ||
+        confirmarSenha.length === 0
 
     return (
 
         <Grid container direction='row' justifyContent='center' alignItems='center'>
             <Grid item xs={6} className='imagem2'></Grid>
             <Grid item xs={6} alignItems='center'>
-            <Box paddingX={10}>
-                <form onSubmit={onSubmit}>
-                    <Typography variant="h3" color="textSecondary" component="h1" align="center" >Formulário de Atualização do Usuário</Typography>
-                    <TextField 
-                        error={checaNome} 
-                        value={user.nome} 
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => updatedUsuario(e)} 
-                        id="nome" 
-                        label="nome" 
-                        variant="outlined" 
-                        name="nome" 
-                        margin="normal" 
-                        fullWidth 
-                        helperText={checaNome ? 'Digite um nome válido!' : ''} 
-                    />
-                    <TextField 
-                        error={checaUsuario} 
-                        value={user.usuario} 
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => updatedUsuario(e)} 
-                        id="usuario" 
-                        label="usuario" 
-                        variant="outlined" 
-                        name="usuario" 
-                        margin="normal" 
-                        fullWidth 
-                        helperText={checaUsuario ? 'Digite um e-mail válido!' : ''}
-                        disabled
-                    />
-                    <TextField 
-                        value={user.foto} 
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => updatedUsuario(e)} 
-                        id="foto" 
-                        label="foto" 
-                        variant="outlined" 
-                        name="foto" 
-                        margin="normal" 
-                        fullWidth 
-                    />
-                    <TextField 
-                        error={user.senha !== undefined ? user.senha.length > 0 && user.senha.length < 8 : false} 
-                        value={user.senha} 
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => updatedUsuario(e)} 
-                        id="senha" 
-                        label="senha" 
-                        variant="outlined" 
-                        name="senha" 
-                        margin="normal" 
-                        type='password' 
-                        fullWidth 
-                        helperText={user.senha !== undefined && user.senha.length > 0 && user.senha.length < 8 ? "A senha precisa ter no mínimo 8 caracteres" : ""} 
-                    />
-                    <TextField 
-                        error={user.senha !== undefined && confirmarSenha !== user.senha ? true : false} 
-                        value={confirmarSenha} 
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => confirmarSenhaHandle(e)} 
-                        id='confirmarSenha' 
-                        label='confirmarSenha' 
-                        variant='outlined' 
-                        name='confirmarSenha' 
-                        margin='normal' 
-                        type='password' 
-                        fullWidth 
-                        helperText={user.senha !== undefined && confirmarSenha !== user.senha ? 'As senhas não conferem!' : ''}
-                    />
-                    <Link to='/perfil' className='text-decorator-none'>
-                        <Button variant='contained' color='secondary' className='btnCancelar'>
-                            Cancelar
+                <Box paddingX={10}>
+                    <form onSubmit={onSubmit}>
+                        <Typography variant="h3" color="textSecondary" component="h1" align="center" >Formulário de Atualização do Usuário</Typography>
+                        <TextField
+                            error={checaNome}
+                            value={user.nome}
+                            onChange={(e: ChangeEvent<HTMLInputElement>) => updatedUsuario(e)}
+                            id="nome"
+                            label="nome"
+                            variant="outlined"
+                            name="nome"
+                            margin="normal"
+                            fullWidth
+                            helperText={checaNome ? 'Digite um nome válido!' : ''}
+                        />
+                        <TextField
+                            error={checaUsuario}
+                            value={user.usuario}
+                            onChange={(e: ChangeEvent<HTMLInputElement>) => updatedUsuario(e)}
+                            id="usuario"
+                            label="usuario"
+                            variant="outlined"
+                            name="usuario"
+                            margin="normal"
+                            fullWidth
+                            helperText={checaUsuario ? 'Digite um e-mail válido!' : ''}
+                            disabled
+                        />
+                        <TextField
+                            value={user.foto}
+                            onChange={(e: ChangeEvent<HTMLInputElement>) => updatedUsuario(e)}
+                            id="foto"
+                            label="foto"
+                            variant="outlined"
+                            name="foto"
+                            margin="normal"
+                            fullWidth
+                        />
+                        <TextField
+                            error={user.senha !== undefined ? user.senha.length > 0 && user.senha.length < 8 : false}
+                            value={user.senha}
+                            onChange={(e: ChangeEvent<HTMLInputElement>) => updatedUsuario(e)}
+                            id="senha"
+                            label="senha"
+                            variant="outlined"
+                            name="senha"
+                            margin="normal"
+                            type='password'
+                            fullWidth
+                            helperText={user.senha !== undefined && user.senha.length > 0 && user.senha.length < 8 ? "A senha precisa ter no mínimo 8 caracteres" : ""}
+                        />
+                        <TextField
+                            error={user.senha !== undefined && confirmarSenha !== user.senha ? true : false}
+                            value={confirmarSenha}
+                            onChange={(e: ChangeEvent<HTMLInputElement>) => confirmarSenhaHandle(e)}
+                            id='confirmarSenha'
+                            label='confirmarSenha'
+                            variant='outlined'
+                            name='confirmarSenha'
+                            margin='normal'
+                            type='password'
+                            fullWidth
+                            helperText={user.senha !== undefined && confirmarSenha !== user.senha ? 'As senhas não conferem!' : ''}
+                        />
+                        <Link to='/perfil' className='text-decorator-none'>
+                            <Button variant='contained' color='secondary' className='btnCancelar'>
+                                Cancelar
+                            </Button>
+                        </Link>
+                        <Button type="submit" variant="contained" color="primary"
+                            disabled={checaNome || checaUsuario ||
+                                confirmarSenha !== user.senha || checaVazio ? true : false}
+                        >
+                            Atualizar
                         </Button>
-                    </Link>
-                    <Button type="submit" variant="contained" color="primary"
-                     disabled={ checaNome || checaUsuario ||  
-                                confirmarSenha !== user.senha ||  checaVazio ? true : false}
-                    >
-                       Atualizar
-                    </Button>
-                </form>
-            </Box>
+                    </form>
+                </Box>
             </Grid>
         </Grid>
 
